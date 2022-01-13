@@ -1,21 +1,28 @@
 import { Comment } from 'src/comment/comment.entity'
 import { Issue } from 'src/issue/issue.entity'
 import { Project } from 'src/project/project.entity'
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm'
 
 @Entity({ name: 'user' })
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @Column({ nullable: false, unique: true })
+  @PrimaryColumn()
   email: string
 
   @Column({ nullable: false })
   name: string
 
   @Column({ nullable: false })
-  password: string
+  passwordHash: string
 
   @OneToMany(() => Comment, (comment) => comment.author)
   comments: Comment[]
@@ -25,4 +32,7 @@ export class User {
 
   @OneToMany(() => Project, (comment) => comment.owner)
   projects: Project[]
+
+  @CreateDateColumn()
+  createdAt: Date
 }

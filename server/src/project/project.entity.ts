@@ -1,6 +1,12 @@
 import { Issue } from 'src/issue/issue.entity'
 import { User } from 'src/user/user.entity'
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm'
 
 @Entity({ name: 'project' })
 export class Project {
@@ -21,4 +27,7 @@ export class Project {
 
   @ManyToOne(() => Issue, (issue) => issue.project)
   issues: Issue[]
+
+  @CreateDateColumn()
+  createdAt: Date
 }
