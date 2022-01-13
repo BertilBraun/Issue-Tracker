@@ -1,5 +1,3 @@
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
@@ -18,9 +16,7 @@ import { UserModule } from './user/user.module'
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        name: 'issue_tracker_connection',
         url: configService.get<string>('DATABASE_URL'),
-        retryAttempts: 3,
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true,
         retryAttempts: 3,
@@ -34,7 +30,5 @@ import { UserModule } from './user/user.module'
     ProjectModule,
     IssueModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}
