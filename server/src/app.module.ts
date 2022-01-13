@@ -1,9 +1,12 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserModule } from './user/user.module';
+import { Module } from '@nestjs/common'
+import { ConfigModule, ConfigService } from '@nestjs/config'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { CommentModule } from './comment/comment.module'
+import { IssueModule } from './issue/issue.module'
+import { ProjectModule } from './project/project.module'
+import { UserModule } from './user/user.module'
 
 @Module({
   imports: [
@@ -20,12 +23,16 @@ import { UserModule } from './user/user.module';
         retryAttempts: 3,
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true,
+        retryAttempts: 3,
         ssl: {
           rejectUnauthorized: false,
         },
       }),
     }),
     UserModule,
+    CommentModule,
+    ProjectModule,
+    IssueModule,
   ],
   controllers: [AppController],
   providers: [AppService],

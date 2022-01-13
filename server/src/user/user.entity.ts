@@ -1,16 +1,28 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Comment } from 'src/comment/comment.entity'
+import { Issue } from 'src/issue/issue.entity'
+import { Project } from 'src/project/project.entity'
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity({ name: 'user' })
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id: string
 
   @Column({ nullable: false, unique: true })
-  email: string;
+  email: string
 
   @Column({ nullable: false })
-  name: string;
+  name: string
 
   @Column({ nullable: false })
-  password: string;
+  password: string
+
+  @OneToMany(() => Comment, (comment) => comment.author)
+  comments: Comment[]
+
+  @OneToMany(() => Issue, (issue) => issue.author)
+  issues: Issue[]
+
+  @OneToMany(() => Project, (comment) => comment.owner)
+  projects: Project[]
 }
