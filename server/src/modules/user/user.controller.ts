@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common'
 import { JwtAuth } from 'src/decorators/jwt-auth'
+import { UserCreateDto } from 'src/dtos'
 import { User } from './user.entity'
 import { UserService } from './user.service'
 

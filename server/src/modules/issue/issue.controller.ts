@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common'
 import { JwtAuth } from 'src/decorators/jwt-auth'
+import { IssueCreateDto, IssueUpdateDto } from 'src/dtos'
 import { Issue } from './issue.entity'
 import { IssueService } from './issue.service'
 

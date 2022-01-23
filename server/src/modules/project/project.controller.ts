@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common'
 import { JwtAuth } from 'src/decorators/jwt-auth'
+import { AddMemberDto, ProjectCreateDto, ProjectUpdateDto } from 'src/dtos'
 import { Project } from './project.entity'
 import { ProjectService } from './project.service'
 
