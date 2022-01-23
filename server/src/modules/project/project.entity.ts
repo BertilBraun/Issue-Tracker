@@ -1,5 +1,5 @@
-import { Issue } from 'src/issue/issue.entity'
-import { User } from 'src/user/user.entity'
+import { Issue } from '../issue/issue.entity'
+import { User } from '../user/user.entity'
 import {
   Column,
   CreateDateColumn,

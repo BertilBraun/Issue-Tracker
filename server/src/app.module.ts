@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { AuthModule } from './auth/auth.module'
-import { CommentModule } from './comment/comment.module'
-import { IssueModule } from './issue/issue.module'
-import { ProjectModule } from './project/project.module'
-import { UserModule } from './user/user.module'
+import { AuthModule } from './modules/auth/auth.module'
+import { CommentModule } from './modules/comment/comment.module'
+import { IssueModule } from './modules/issue/issue.module'
+import { ProjectModule } from './modules/project/project.module'
+import { UserModule } from './modules/user/user.module'
 
 @Module({
   imports: [

@@ -1,11 +1,17 @@
-import { Comment } from 'src/comment/comment.entity'
-import { Project } from 'src/project/project.entity'
-import { User } from 'src/user/user.entity'
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Comment } from '../comment/comment.entity'
+import { Project } from '../project/project.entity'
+import { User } from '../user/user.entity'
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm'
 
-type Priority = 'low' | 'medium' | 'high'
+export type Priority = 'low' | 'medium' | 'high'
 
-type Status = 'open' | 'in progress' | 'closed'
+export type Status = 'open' | 'in progress' | 'closed'
 
 @Entity({ name: 'issue' })
 export class Issue {

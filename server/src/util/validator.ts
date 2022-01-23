@@ -1,20 +1,24 @@
 interface AuthErrors {
+  email?: string
   username?: string
   password?: string
 }
 
 interface ProjectErrors {
   name?: string
-  members?: string
+  description?: string
 }
 
 interface IssueErrors {
   title?: string
   description?: string
-  priority?: string
 }
 
-export const registerValidator = (username: string, password: string) => {
+export const registerValidator = (
+  username: string,
+  email: string,
+  password: string,
+) => {
   const errors: AuthErrors = {}
 
   if (
@@ -30,6 +34,10 @@ export const registerValidator = (username: string, password: string) => {
     errors.username = 'Username must have alphanumeric characters only.'
   }
 
+  if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+    errors.email = 'Email must be valid.'
+  }
+
   if (!password || password.length < 6) {
     errors.password = 'Password must be atleast 6 characters long.'
   }
@@ -40,11 +48,11 @@ export const registerValidator = (username: string, password: string) => {
   }
 }
 
-export const loginValidator = (username: string, password: string) => {
+export const loginValidator = (email: string, password: string) => {
   const errors: AuthErrors = {}
 
-  if (!username || username.trim() === '') {
-    errors.username = 'Username field must not be empty.'
+  if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+    errors.email = 'Email must be valid.'
   }
 
   if (!password) {
@@ -63,31 +71,16 @@ export const projectNameError = (name: string) => {
   }
 }
 
-export const projectMembersError = (members: string[]) => {
-  if (!Array.isArray(members)) {
-    return 'Members field must be an array.'
-  }
-
-  if (members.filter((m, i) => members.indexOf(m) !== i).length !== 0) {
-    return 'Members field must not have already-added/duplicate IDs.'
-  }
-
-  if (members.some((m) => m.length !== 36)) {
-    return 'Members array must contain valid UUIDs.'
-  }
-}
-
-export const createProjectValidator = (name: string, members: string[]) => {
+export const createProjectValidator = (name: string, description: string) => {
   const errors: ProjectErrors = {}
   const nameError = projectNameError(name)
-  const membersError = projectMembersError(members)
 
   if (nameError) {
     errors.name = nameError
   }
 
-  if (membersError) {
-    errors.members = membersError
+  if (!description || description.trim() === '' || description.length > 1000) {
+    errors.description = 'Description length must not be more than 1000.'
   }
 
   return {
@@ -96,13 +89,8 @@ export const createProjectValidator = (name: string, members: string[]) => {
   }
 }
 
-export const createIssueValidator = (
-  title: string,
-  description: string,
-  priority: string,
-) => {
+export const createIssueValidator = (title: string, description: string) => {
   const errors: IssueErrors = {}
-  const validPriorities = ['low', 'medium', 'high']
 
   if (!title || title.trim() === '' || title.length > 60 || title.length < 3) {
     errors.title = 'Title must be in range of 3-60 characters length.'
@@ -110,10 +98,6 @@ export const createIssueValidator = (
 
   if (!description || description.trim() === '') {
     errors.description = 'Description field must not be empty.'
-  }
-
-  if (!priority || !validPriorities.includes(priority)) {
-    errors.priority = 'Priority can only be - low, medium or high.'
   }
 
   return {

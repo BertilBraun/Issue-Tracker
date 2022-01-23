@@ -1,6 +1,3 @@
-import { Comment } from 'src/comment/comment.entity'
-import { Issue } from 'src/issue/issue.entity'
-import { Project } from 'src/project/project.entity'
 import {
   Column,
   CreateDateColumn,
@@ -9,6 +6,9 @@ import {
   PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm'
+import { Comment } from '../comment/comment.entity'
+import { Issue } from '../issue/issue.entity'
+import { Project } from '../project/project.entity'
 
 @Entity({ name: 'user' })
 export class User {

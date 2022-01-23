@@ -15,9 +15,10 @@ export class AuthController {
 
   @Post('signup')
   async signUp(
+    @Query('name') name: string,
     @Query('email') email: string,
     @Query('password') password: string,
   ): Promise<string> {
-    return this.authService.signUp(email, password)
+    return this.authService.signUp(name, email, password)
   }
 }
