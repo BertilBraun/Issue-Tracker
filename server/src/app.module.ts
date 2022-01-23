@@ -20,7 +20,6 @@ import { UserModule } from './modules/user/user.module'
         url: configService.get<string>('DATABASE_URL'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         synchronize: true,
-        retryAttempts: 3,
         ssl: {
           rejectUnauthorized: false,
         },
