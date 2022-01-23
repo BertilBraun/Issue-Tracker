@@ -1,0 +1,27 @@
+{
+   "compilerOptions": {
+      // common
+      "forceConsistentCasingInFileNames": true,
+      "noFallthroughCasesInSwitch": true,
+      "noImplicitReturns": true,
+      "pretty": true,
+      "removeComments": true,
+      "strict": true,
+
+      // specific
+      "skipLibCheck": true,
+      "target": "es6",
+      "module": "CommonJS",
+      "moduleResolution": "node",
+      "allowSyntheticDefaultImports": true,
+      "sourceMap": false,
+      "lib": ["es6"],
+      "declaration": true,
+      "outDir": "dist",
+      "esModuleInterop": true,
+      "incremental": true,
+      "rootDir": "src"
+   },
+   "exclude": ["node_modules", "dist"],
+   "include": ["src"]
+}
