@@ -3,7 +3,6 @@ import {
   CreateDateColumn,
   Entity,
   OneToMany,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm'
 import { Comment } from '../comment/comment.entity'
@@ -15,7 +14,7 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
-  @PrimaryColumn()
+  @Column({ nullable: false, unique: true })
   email: string
 
   @Column({ nullable: false })

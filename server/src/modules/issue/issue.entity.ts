@@ -21,9 +21,6 @@ export class Issue {
   @Column({ nullable: false })
   title: string
 
-  @ManyToOne(() => User, (user) => user.issues)
-  author: User
-
   @Column({ nullable: false })
   description: string
 
@@ -40,6 +37,9 @@ export class Issue {
     default: 'low',
   })
   priority: Priority
+
+  @ManyToOne(() => User, (user) => user.issues)
+  author: User
 
   @ManyToOne(() => Project, (project) => project.issues)
   project: Project

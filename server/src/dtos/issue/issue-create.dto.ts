@@ -1,10 +1,17 @@
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator'
 import { Priority, Status } from 'src/modules/issue/issue.entity'
 
-export type IssueCreateDto = {
-  title: string
-  description: string
-  status: Status
-  priority: Priority
-  projectId: string
-  authorId: string
+export class IssueCreateDto {
+  @IsNotEmpty() @IsString() title: string
+  @IsNotEmpty() @IsString() description: string
+  @IsOptional() @IsString() status: Status
+  @IsOptional() @IsString() priority: Priority
+  @IsNotEmpty() @IsNumber() projectId: number
+  @IsNotEmpty() @IsUUID() authorId: string
 }

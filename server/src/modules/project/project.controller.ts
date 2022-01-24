@@ -1,7 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common'
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common'
 import { JwtAuth } from 'src/decorators/jwt-auth'
 import { AddMemberDto, ProjectCreateDto, ProjectUpdateDto } from 'src/dtos'
-import { Project } from './project.entity'
+import { ProjectDto } from 'src/dtos/project/project.dto'
 import { ProjectService } from './project.service'
 
 @Controller('project')
@@ -10,25 +18,25 @@ export class ProjectController {
 
   @Get()
   @JwtAuth()
-  findAll(): Promise<Project[]> {
+  findAll(): Promise<ProjectDto[]> {
     return this.projectService.findAll()
   }
 
   @Get(':id')
   @JwtAuth()
-  findOne(@Param('id') id: string): Promise<Project> {
+  findOne(@Param('id') id: number): Promise<ProjectDto> {
     return this.projectService.findOne(id)
   }
 
   @Delete(':id')
   @JwtAuth()
-  remove(@Param('id') id: string): Promise<void> {
+  remove(@Param('id') id: number): Promise<void> {
     return this.projectService.remove(id)
   }
 
   @Post()
   @JwtAuth()
-  save(@Body() project: ProjectCreateDto): Promise<Project> {
+  save(@Body() project: ProjectCreateDto): Promise<ProjectDto> {
     return this.projectService.save(
       project.name,
       project.ownerId,
@@ -36,21 +44,21 @@ export class ProjectController {
     )
   }
 
-  @Post(':id')
+  @Patch(':id')
   @JwtAuth()
   update(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() project: ProjectUpdateDto,
-  ): Promise<Project> {
+  ): Promise<ProjectDto> {
     return this.projectService.update(id, project.name, project.description)
   }
 
   @Post(':id/add')
   @JwtAuth()
   addMember(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() member: AddMemberDto,
-  ): Promise<Project> {
+  ): Promise<ProjectDto> {
     return this.projectService.addMember(id, member.userId)
   }
 }

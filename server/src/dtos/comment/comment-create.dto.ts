@@ -1,5 +1,7 @@
-export type CommentCreateDto = {
-    comment: string
-    issueId: string
-    authorId: string
+import { IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator'
+
+export class CommentCreateDto {
+  @IsNotEmpty() @IsString() comment: string
+  @IsNotEmpty() @IsNumber() issueId: number
+  @IsNotEmpty() @IsUUID() authorId: string
 }

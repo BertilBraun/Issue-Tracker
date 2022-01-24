@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { UserDto } from 'src/dtos/user/user.dto'
+import { convertUser, convertUserAsync } from 'src/util/dto-converter'
 import { Repository } from 'typeorm'
 import { User } from './user.entity'
 
@@ -10,14 +12,18 @@ export class UserService {
     private usersRepository: Repository<User>,
   ) {}
 
-  findAll(): Promise<User[]> {
-    return this.usersRepository.find()
+  async findAll(): Promise<UserDto[]> {
+    const users = await this.usersRepository.find()
+
+    return users.map(convertUser)
   }
 
-  findOne(id: string): Promise<User> {
-    return this.usersRepository.findOne(id, {
-      relations: ['comments', 'issues', 'projects'],
-    })
+  async findOne(id: string): Promise<UserDto> {
+    return convertUserAsync(
+      this.usersRepository.findOne(id, {
+        relations: ['comments', 'issues', 'projects'],
+      }),
+    )
   }
 
   findByEmail(email: string): Promise<User> {
@@ -28,14 +34,20 @@ export class UserService {
     await this.usersRepository.delete(id)
   }
 
-  save(email: string, name: string, passwordHash: string): Promise<User> {
-    return this.usersRepository.save({
-      email,
-      name,
-      passwordHash,
-      comments: [],
-      issues: [],
-      projects: [],
-    })
+  async save(
+    email: string,
+    name: string,
+    passwordHash: string,
+  ): Promise<UserDto> {
+    return convertUserAsync(
+      this.usersRepository.save({
+        email,
+        name,
+        passwordHash,
+        comments: [],
+        issues: [],
+        projects: [],
+      }),
+    )
   }
 }

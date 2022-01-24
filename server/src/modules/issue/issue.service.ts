@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { IssueDto } from 'src/dtos/issue/issue.dto'
+import { convertIssue, convertIssueAsync } from 'src/util/dto-converter'
 import { createIssueValidator } from 'src/util/validator'
 import { Repository } from 'typeorm'
 import { ProjectService } from '../project/project.service'
@@ -15,17 +17,21 @@ export class IssueService {
     private userService: UserService,
   ) {}
 
-  findAll(): Promise<Issue[]> {
-    return this.issuesRepository.find()
+  async findAll(): Promise<IssueDto[]> {
+    const issues = await this.issuesRepository.find()
+
+    return issues.map(convertIssue)
   }
 
-  findOne(id: string): Promise<Issue> {
-    return this.issuesRepository.findOne(id, {
-      relations: ['comments', 'comments.author', 'project', 'author'],
-    })
+  async findOne(id: number): Promise<IssueDto> {
+    return convertIssueAsync(
+      this.issuesRepository.findOne(id, {
+        relations: ['comments', 'comments.author', 'project', 'author'],
+      }),
+    )
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     await this.issuesRepository.delete(id)
   }
 
@@ -35,8 +41,8 @@ export class IssueService {
     description: string,
     status: Status,
     priority: Priority,
-    projectId: string,
-  ): Promise<Issue> {
+    projectId: number,
+  ): Promise<IssueDto> {
     const { errors, valid } = createIssueValidator(title, description)
 
     if (!valid) {
@@ -55,24 +61,26 @@ export class IssueService {
       throw new Error('Author not found')
     }
 
-    return this.issuesRepository.save({
-      title,
-      author,
-      description,
-      status,
-      priority,
-      project,
-      comments: [],
-    })
+    return convertIssueAsync(
+      this.issuesRepository.save({
+        title,
+        author,
+        description,
+        status,
+        priority,
+        project,
+        comments: [],
+      }),
+    )
   }
 
   async update(
-    id: string,
+    id: number,
     title?: string,
     description?: string,
     status?: Status,
     priority?: Priority,
-  ): Promise<Issue> {
+  ): Promise<IssueDto> {
     const issue = await this.issuesRepository.findOne(id)
 
     if (!issue) {
@@ -94,6 +102,6 @@ export class IssueService {
     issue.priority = priority || issue.priority
     issue.updatedAt = new Date()
 
-    return this.issuesRepository.save(issue)
+    return convertIssueAsync(this.issuesRepository.save(issue))
   }
 }

@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { CommentDto } from 'src/dtos/comment/comment.dto'
 import { IssueService } from 'src/modules/issue/issue.service'
 import { UserService } from 'src/modules/user/user.service'
+import { convertComment, convertCommentAsync } from 'src/util/dto-converter'
 import { Repository } from 'typeorm'
 import { Comment } from './comment.entity'
 
@@ -14,25 +16,29 @@ export class CommentService {
     private issueService: IssueService,
   ) {}
 
-  findAll(): Promise<Comment[]> {
-    return this.commentsRepository.find()
+  async findAll(): Promise<CommentDto[]> {
+    const comments = await this.commentsRepository.find()
+
+    return comments.map(convertComment)
   }
 
-  findOne(id: string): Promise<Comment> {
-    return this.commentsRepository.findOne(id, {
-      relations: ['issue', 'author'],
-    })
+  async findOne(id: number): Promise<CommentDto> {
+    return convertCommentAsync(
+      this.commentsRepository.findOne(id, {
+        relations: ['issue', 'author'],
+      }),
+    )
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     await this.commentsRepository.delete(id)
   }
 
   async save(
     comment: string,
-    issueId: string,
+    issueId: number,
     authorId: string,
-  ): Promise<Comment> {
+  ): Promise<CommentDto> {
     const issue = await this.issueService.findOne(issueId)
 
     if (!issue) {
@@ -45,10 +51,12 @@ export class CommentService {
       throw new Error('User not found')
     }
 
-    return this.commentsRepository.save({
-      comment,
-      issue,
-      author,
-    })
+    return convertCommentAsync(
+      this.commentsRepository.save({
+        comment,
+        issue,
+        author,
+      }),
+    )
   }
 }

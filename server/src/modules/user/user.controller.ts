@@ -1,7 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common'
+import { Controller, Delete, Get, Param } from '@nestjs/common'
 import { JwtAuth } from 'src/decorators/jwt-auth'
-import { UserCreateDto } from 'src/dtos'
-import { User } from './user.entity'
+import { UserDto } from 'src/dtos/user/user.dto'
 import { UserService } from './user.service'
 
 @Controller('user')
@@ -10,7 +9,7 @@ export class UserController {
 
   @Get(':id')
   @JwtAuth()
-  findOne(@Param('id') id: string): Promise<User> {
+  findOne(@Param('id') id: string): Promise<UserDto> {
     return this.userService.findOne(id)
   }
 
@@ -18,11 +17,5 @@ export class UserController {
   @JwtAuth()
   remove(@Param('id') id: string): Promise<void> {
     return this.userService.remove(id)
-  }
-
-  @Post()
-  @JwtAuth()
-  save(@Body() user: UserCreateDto): Promise<User> {
-    return this.userService.save(user.email, user.name, user.passwordHash)
   }
 }

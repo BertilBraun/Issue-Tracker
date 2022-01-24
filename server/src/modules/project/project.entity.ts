@@ -16,11 +16,11 @@ export class Project {
   @Column({ nullable: false })
   name: string
 
-  @ManyToOne(() => User, (user) => user.projects)
-  owner: User
-
   @Column({ nullable: false })
   description: string
+
+  @ManyToOne(() => User, (user) => user.projects)
+  owner: User
 
   @ManyToOne(() => User) // TODO check if this is correct
   members: User[]

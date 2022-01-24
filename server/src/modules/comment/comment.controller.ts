@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common'
 import { JwtAuth } from 'src/decorators/jwt-auth'
 import { CommentCreateDto } from 'src/dtos'
-import { Comment } from './comment.entity'
+import { CommentDto } from 'src/dtos/comment/comment.dto'
 import { CommentService } from './comment.service'
 
 @Controller('comment')
@@ -10,19 +10,19 @@ export class CommentController {
 
   @Get(':id')
   @JwtAuth()
-  findOne(@Param('id') id: string): Promise<Comment> {
+  findOne(@Param('id') id: number): Promise<CommentDto> {
     return this.commentService.findOne(id)
   }
 
   @Delete(':id')
   @JwtAuth()
-  remove(@Param('id') id: string): Promise<void> {
+  remove(@Param('id') id: number): Promise<void> {
     return this.commentService.remove(id)
   }
 
   @Post()
   @JwtAuth()
-  save(@Body() comment: CommentCreateDto): Promise<Comment> {
+  save(@Body() comment: CommentCreateDto): Promise<CommentDto> {
     return this.commentService.save(
       comment.comment,
       comment.issueId,
